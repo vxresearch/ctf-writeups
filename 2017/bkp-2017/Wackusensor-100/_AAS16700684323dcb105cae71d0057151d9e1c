@@ -1,0 +1,15 @@
+0<?php if (! isset($a)): ?>
+<html>
+<head>
+        <title>Wackusensor</title>
+        <link rel="icon" type="image/x-icon" href="favicon.png">
+        <link rel='stylesheet' href='style.css' type='text/css'>
+</head>
+<body>
+<h1>Wackusensor</h1>
+<p>It seems that this machine is executing the php code instead of displaying it,
+you'll have to find another way :o)</p>
+</body>
+
+<?php endif ?>
+<?php $flag = 'BKP{What_about_writing_a_Burp_extension_for_this_N0w?}'; ?>

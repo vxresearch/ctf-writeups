@@ -1,0 +1,16 @@
+0<html>
+<head>
+	<title>Wackusensor</title>
+	<link rel="icon" type="image/x-icon" href="favicon.png">
+	<link rel='stylesheet' href='style.css' type='text/css'>
+</head>
+<body>
+<h1>Wackusensor</h1>
+
+<p>We deployed the <a href='https://www.acunetix.com/vulnerability-scanner/acusensor-technology/'>acusensor</a> thingy
+<a href='./acu_phpaspect.txt'>here</a>, with <code>bkp2017</code> as a password, but I can't make Acunetix work with it :/
+</p>
+<?php
+$a = true; eval(_AAS55("/var/www/html/index.php",15,false,false,"include", 'super_secret_file_containing_the_flag_you_should_read_it.php')); if (isset($_GET[_AAS91("/var/www/html/index.php", 18, "\$_GET", 's')])) { _AAS48(show_source('./acu_phpaspect.php')); } elseif (isset($_GET[_AAS91("/var/www/html/index.php", 20, "\$_GET", 'super_secret_parameter_hahaha')])) { if (stripos ($_GET[_AAS91("/var/www/html/index.php", 21, "\$_GET", 'super_secret_parameter_hahaha')], "php") != 0) { _AAS48('You are not allowed to read php files, sorry.'); } else { echo _AAS86("/var/www/html/index.php",24,"file_get_contents",Array($_GET[_AAS91("/var/www/html/index.php", 24, "\$_GET", 'super_secret_parameter_hahaha')])); } } ?>
+</body>
+</html>
