@@ -1,10 +1,9 @@
-# Boston Key Party 2017: Wackusensor
+# Boston Key Party 2017: Wackusensor (Cloud, 100)
 
-分類: Cloud
-
-分數: 100
-
-Target: http://54.200.58.235/
+說明：
+> I can't get this stupid Acusensor to work and it's driving me crazy: how can I do web stuff without automated scanners :/
+>
+> http://54.200.58.235/
 
 ## 簡介
 

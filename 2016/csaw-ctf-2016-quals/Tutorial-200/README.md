@@ -1,15 +1,14 @@
-# CSAW CTF 2016 Quals: Tutorial
+# CSAW CTF 2016 Quals: Tutorial (Pwn, 200)
 
-分類：Pwn 分數：200
 
-說明：Ok sport, now that you have had your Warmup, maybe you want to checkout the Tutorial.
+說明：
+> Ok sport, now that you have had your Warmup, maybe you want to checkout the Tutorial.
+>
+> [tutorial](https://github.com/isislab/CSAW-CTF-2016-Quals/raw/master/Pwn/Tutorial/tutorial) [libc-2.19.so](https://github.com/isislab/CSAW-CTF-2016-Quals/raw/master/Pwn/Tutorial/libc-2.19.so)
 
-- [tutorial](https://github.com/isislab/CSAW-CTF-2016-Quals/raw/master/Pwn/Tutorial/tutorial)
-- [libc-2.19.so](https://github.com/isislab/CSAW-CTF-2016-Quals/raw/master/Pwn/Tutorial/libc-2.19.so)
+## 解題
 
-## Binary
-
-下載 binary 後例行動作：
+下載binary後的例行動作：
 
 ```
 $ checksec tutorial
@@ -21,9 +20,9 @@ $ checksec tutorial
     PIE:      No PIE
 ```
 
-這個 binary 用了 *stack canary* 和 *NX bit*，要進行 stack buffer overflow 要先找到 canary value，而且也不能直接執行 stack 上的 shellcode。
+這個binary用了*stack canary*和*NX bit*，要先找到canary value才能進行stack buffer overflow，而且因為NX bit也不能直接執行stack上的 shellcode。
 
-先嘗試執行 binary，即時得到個 segfault：
+先嘗試執行binary，即時得到個segfault：
 
 ```
 (gdb) run
@@ -36,7 +35,7 @@ __GI_____strtol_l_internal (nptr=0x0, endptr=endptr@entry=0x0,
 298	../stdlib/strtol_l.c: No such file or directory.
 ```
 
-用 Hopper Disassembler disassemble 這個 binary，發現這個程式用 argv[1] 作為 listening socket 的 port。
+用Hopper Disassembler反組譯這個binary，發現這個程式用argv[1]作為listening socket的port。
 
 ```
 (gdb) run 9999
@@ -45,7 +44,7 @@ User tutorial does not exist
 accept: Bad file descriptor
 ```
 
-執行 `./tutorial 9999` 沒有 segfault，不過嘗試 `nc localhost 9999` 時會得到另一個 error，原來這個程式還要以 *tutorial* 用戶運行。在系統加入一個用戶應該也可以的，不過我選擇用 Hopper 直接把這個檢查改為 NOP，順手看見附近有一個 timeout alarm 也 NOP 掉以免阻礙 debug。這樣總算可以成功執行這個 binary：
+執行`./tutorial 9999`沒有segfault，不過嘗試`nc localhost 9999`時會得到另一個錯誤，原來這個程式還要以*tutorial*用戶運行。在系統加入一個用戶應該就可以，不過我選擇用Hopper直接把這個檢查改為NOP，順手看見附近有一個alarm也NOP掉以免阻礙debug。這樣總算可以成功執行這個 binary：
 
 ```
 $ nc localhost 9999
@@ -70,17 +69,17 @@ AAAAA
 >
 ```
 
-選擇 Manual 會得到一個 memory address，disassemble `func1` 看到這個 address 其實是 `dlsym(0xffffffffffffffff, "puts")-0x500`，這是一個 libc function 的 address，有了這個就可以用 return-to-libc 方法去繞過 *NX bit* 的限制。
+選擇Manual會得到一個記憶位址，反組譯`func1`看到這個位址其實是`dlsym(0xffffffffffffffff, "puts")-0x500`，這是一個libc function的位址，有了這個位址就可以用return-to-libc方法去繞過*NX bit*的限制。
 
-再看看 Practice 選項（`func2`）。
+再看看Practice選項（`func2`）。
 
 ![func2](func2.png)
 
-`func2` 有三個 stack variables：8 bytes stack canary，312 bytes buffer 和 4 byte 的 socket file descriptor。這個 function 從 socket 讀取 460 bytes 寫進 buffer，然後再由 buffer 讀 324 bytes 寫到 socket。由於 buffer 只有 312 bytes，利用這個 function 就可以覆寫 stack frame 的 return address 取得 control flow，因為它還會把 buffer 之後的 12 bytes 寫出來，我們還可以得到 stack canary 的值和上一個 stack frame 的 `$rbp` 的最低 32 bits。
+`func2`有三個stack variables：8 bytes stack canary，312 bytes buffer和4 byte的socket file descriptor。這個function從 socket讀取460 bytes寫進buffer，然後再由buffer讀324 bytes寫到socket。由於buffer只有 312 bytes，利用這個function就可以覆寫stack frame的return address取得control flow，因為它還會把buffer之後的12 bytes寫出來，我們還可以得到stack canary的值和上一個stack frame的`$rbp`的最低32 bits。
 
-## 解題
+## Exploit
 
-到這裡要怎樣解題就很清楚，先要用 Manual 選項取得 libc address，從 Practice 選項讀取 stack canary 和 stack base address，再一次用 Practice 選項覆寫 stack frame 的 return address 取得 control flow，再引導去 libc 的 `system()` 取 shell。不過還有一個麻煩的地方，就是這個 binary 用 socket 進行 IO，我們要把 shell 的 stdin/stdout redirect 到 socket 的 file descriptor 才可以看到 output。
+去到這裡，要怎樣exploit己經很清楚，先要用Manual選項取得libc address，從Practice選項讀取stack canary和stack base address，再一次用Practice選項覆寫stack frame的return address取得control flow，再引導去libc的`system()`取得shell。不過還有一個麻煩的地方，就是這個binary用socket進行IO，我們要把shell的stdin/stdout重定向到socket的file descriptor才可以看到output。
 
 ```
 $ strace -f ./tutorial 9999
@@ -89,7 +88,7 @@ $ strace -f ./tutorial 9999
 ...
 ```
 
-從 `strace` 看到 socket 的 file descriptor 總是 `4`。最先想到的辦法就是把 `sh >&4 <&4` 寫到 buffer 上作為 `system()` 的 argument。因為 Manual 選項 leak 了 `$rbp` 的最低 32 bits，可以憑這個估算 buffer 的 address，只要在 libc 裡找個 `pop rdi` 的 ROP gadget 把 buffer address 寫進 `$rdi`（System V calling convention 的第一個 function parameter），再把 `$rip` 指到 `system()` 就可以了。可是執行起上來時發現不知道為什麼只有 buffer 的前 7 個 character 可用，連 `cat *>&4` 也不夠。隊友提議用 `hd *>&4`，但 host 好像沒有這個 command，之後在[two letter linux command](http://www.hioreanu.net/cs/two-letter-commands.html) 裡發現 `od` 可用。結果得到 flag 的八進制內容：
+從`strace`看到socket的file descriptor總是`4`。最先想到的辦法就是把`sh >&4 <&4`寫到buffer上作為`system()`的 argument。因為Manual選項洩漏了`$rbp`的最低32 bits，可以憑這個估算buffer的address，只要在libc裡找個`pop rdi`的ROP gadget把buffer address寫進`$rdi`（System V calling convention 的第一個 function parameter），再把`$rip`指到`system()`就可以了。可是執行起上來時發現不知道為什麼只有buffer的前7個character可用，連`cat *>&4`也不夠。隊友提議用`hd *>&4`，但伺服器好像沒有這個指令，之後在[two letter linux command](http://www.hioreanu.net/cs/two-letter-commands.html)裡發現`od`用得著。結果得到flag的八進制內容：
 
 ```
 0000000 046106 043501 031573 051501 057531 030122 057520 030122
@@ -113,7 +112,7 @@ payload += p64(proc_open_addr + system_offset)
 
 完整解答：[tutorial.py](tutorial.py)
 
-這個方法其實不夠簡潔，更直接的做法是先用 `dup2()` 把 `fd 4` 複製到 stdin/stdout，再行 `system("/bin/sh")`，這樣就可以取得完整的 shell，不過既然取到 flag 那就算了。
+這個方法其實不夠簡潔，更直接的做法是先用`dup2()`把`fd 4`複製到stdin/stdout，再行`system("/bin/sh")`，這樣就可以取得完整的shell，不過既然取到flag那就算了。
 
 ## Flag
 
