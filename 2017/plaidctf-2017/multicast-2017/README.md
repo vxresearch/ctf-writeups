@@ -2,9 +2,7 @@
 
 說明：
 
-> Many messages intercepted. 
-
-> Break them.
+> Many messages intercepted. Break them.
 
 ### 簡介
 
