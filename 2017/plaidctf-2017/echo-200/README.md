@@ -3,18 +3,18 @@
 說明：
 > If you hear enough, you may hear the whispers of a key... 
 >
-> If you see app.py well enough, you will notice the UI sucks... 
+> If you see [app.py](https://github.com/ozetta/ctf-writeups/blob/master/2017/plaidctf-2017/echo-200/echo.py) well enough, you will notice the UI sucks... 
 >
 > http://echo.chal.pwning.xxx:9977/ 
 >
 > http://echo2.chal.pwning.xxx:9977/
 
 ## 簡介
-一入去有張 form 可以填，叫你打 Tweets，每次最多打四條，每條最長 140 bytes。
+一入去有張 [form](https://github.com/ozetta/ctf-writeups/blob/master/2017/plaidctf-2017/echo-200/form.html) 可以填，叫你打 Tweets，每次最多打四條，每條最長 140 bytes。
 
-求其打個 haha 之後就出左個 audio control，播佢真係會講 haha。所以點解條題目叫 echo
+求其打個 haha 之後就出左個 audio control，播佢真係會講 [haha](https://github.com/ozetta/ctf-writeups/blob/master/2017/plaidctf-2017/echo-200/haha.wav)。所以點解條題目叫 echo
 
-延伸閱讀: 如何測試 TTS - roflcopter.wav
+延伸閱讀: 如何測試 TTS - [roflcopter.wav](https://github.com/ozetta/ctf-writeups/blob/master/2017/plaidctf-2017/echo-200/roflcopter.wav)
 > 其實只係係咁打 soi soi soi 
 
 ## 題解
@@ -37,7 +37,7 @@
 
 我響條 tweet 度求其打個 asdf\ 佢出 500. 打 asdf/ 或者 as\df 又冇事。佢重識讀個 Slash 添。
 
-之後試下打 ${PATH} 。又唔見你讀 Dollar Path，剩係聽到一堆 Slash 啊 local 啊 bin 啊咁。讀太快聽唔切。
+之後試下打 ${PATH} 。又唔見你讀 Dollar Path，剩係聽到一堆 Slash 啊 local 啊 bin 啊咁。[讀太快聽唔切](https://github.com/ozetta/ctf-writeups/blob/master/2017/plaidctf-2017/echo-200/path.wav)。
 
 根據個 program logic 個 encoded flag 應該係放左響 `{path}/flag` 咁所以響 docker 入面就用 `/share/flag`。 佢將個 flag 每個 byte xor random bytes 64999 次然後將呢 64999 個 bytes 同埋個 output 寫落 `{path}/flag` 度。即係話只要將頭 65000 bytes xor 晒佢就會出 flag 第一個 byte，xor 晒 65001 至 130000 就出第二個字， 如此類推。
 
@@ -62,7 +62,7 @@ $(c=0;for i in `seq 0 64999`;do z=$(od -d -An -N1 -j$i /share/flag);c=$(($c^$z))
 ```
 $(python -c "f=open('/share/flag').read();print len(f)")
 ```
-Two million four hundred and seventy thousand，除返 65000 即係 38。個 flag 有 38 bytes。
+[Two million four hundred and seventy thousand](https://github.com/ozetta/ctf-writeups/blob/master/2017/plaidctf-2017/echo-200/filesize.wav)，除返 65000 即係 38。個 flag 有 38 bytes。
 
 之後郁佢啦：
 ```
@@ -82,9 +82,10 @@ $(python -c "q=65000;print reduce(lambda x,y:x^y,map(lambda x:ord(x),list(open('
 PCTF{L15st3n_T0__reee_reeeeee_reee_la}
 
 ### 聽力測驗
-我唔知點解將 114 115 116 聽左做 140 150 160。之後個 flag 梗係爛。個 95 我一度懷疑係 99。最後我用 hex double check
+我唔知點解將 114 [115](https://github.com/ozetta/ctf-writeups/blob/master/2017/plaidctf-2017/echo-200/115.wav) 116 聽左做 140 [150](https://github.com/ozetta/ctf-writeups/blob/master/2017/plaidctf-2017/echo-200/150.wav) 160。之後個 flag 梗係爛。個 [95](https://github.com/ozetta/ctf-writeups/blob/master/2017/plaidctf-2017/echo-200/95.wav) 我一度懷疑係 [99](https://github.com/ozetta/ctf-writeups/blob/master/2017/plaidctf-2017/echo-200/99.wav)。最後我用 hex double check
 ```
 $(python -c "q=65000;print hex(reduce(lambda x,y:x^y,map(lambda x:ord(x),list(open('/share/flag').read())[8*q:9*q])))")
 ```
-Zero X Seventy Three 即係 0x73 即係 115。
+[Zero X Seventy Three](https://github.com/ozetta/ctf-writeups/blob/master/2017/plaidctf-2017/echo-200/0x73.wav) 即係 0x73 即係 115。
 
+其實可以打返真係數字之後比較個 file 既。
