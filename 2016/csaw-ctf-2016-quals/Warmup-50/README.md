@@ -23,7 +23,7 @@ WOW:0x40060d
 
 ![main](main.png)
 
-64 bytes buffer，加上stack上的8 bytes`$rbp`，總共要72 bytes去overflow return address：
+64 bytes buffer，加上stack上的8 bytes`rbp`，總共要72 bytes去overflow return address：
 
 ```python
 from pwn import *

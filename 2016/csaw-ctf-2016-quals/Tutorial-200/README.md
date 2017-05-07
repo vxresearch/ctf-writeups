@@ -75,7 +75,7 @@ AAAAA
 
 ![func2](func2.png)
 
-`func2`有三個stack variables：8 bytes stack canary，312 bytes buffer和4 byte的socket file descriptor。這個function從 socket讀取460 bytes寫進buffer，然後再由buffer讀324 bytes寫到socket。由於buffer只有 312 bytes，利用這個function就可以覆寫stack frame的return address取得control flow，因為它還會把buffer之後的12 bytes寫出來，我們還可以得到stack canary的值和上一個stack frame的`$rbp`的最低32 bits。
+`func2`有三個stack variables：8 bytes stack canary，312 bytes buffer和4 byte的socket file descriptor。這個function從 socket讀取460 bytes寫進buffer，然後再由buffer讀324 bytes寫到socket。由於buffer只有 312 bytes，利用這個function就可以覆寫stack frame的return address取得control flow，因為它還會把buffer之後的12 bytes寫出來，我們還可以得到stack canary的值和上一個stack frame的`rbp`的最低32 bits。
 
 ## Exploit
 
@@ -88,7 +88,7 @@ $ strace -f ./tutorial 9999
 ...
 ```
 
-從`strace`看到socket的file descriptor總是`4`。最先想到的辦法就是把`sh >&4 <&4`寫到buffer上作為`system()`的 argument。因為Manual選項洩漏了`$rbp`的最低32 bits，可以憑這個估算buffer的address，只要在libc裡找個`pop rdi`的ROP gadget把buffer address寫進`$rdi`（System V calling convention 的第一個 function parameter），再把`$rip`指到`system()`就可以了。可是執行起上來時發現不知道為什麼只有buffer的前7個character可用，連`cat *>&4`也不夠。隊友提議用`hd *>&4`，但伺服器好像沒有這個指令，之後在[two letter linux command](http://www.hioreanu.net/cs/two-letter-commands.html)裡發現`od`用得著。結果得到flag的八進制內容：
+從`strace`看到socket的file descriptor總是`4`。最先想到的辦法就是把`sh >&4 <&4`寫到buffer上作為`system()`的 argument。因為Manual選項洩漏了`rbp`的最低32 bits，可以憑這個估算buffer的address，只要在libc裡找個`pop rdi`的ROP gadget把buffer address寫進`rdi`（System V calling convention 的第一個 function parameter），再把`rip`指到`system()`就可以了。可是執行起上來時發現不知道為什麼只有buffer的前7個character可用，連`cat *>&4`也不夠。隊友提議用`hd *>&4`，但伺服器好像沒有這個指令，之後在[two letter linux command](http://www.hioreanu.net/cs/two-letter-commands.html)裡發現`od`用得著。結果得到flag的八進制內容：
 
 ```
 0000000 046106 043501 031573 051501 057531 030122 057520 030122
