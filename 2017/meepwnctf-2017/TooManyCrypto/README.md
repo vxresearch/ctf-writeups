@@ -27,6 +27,7 @@ flip 下打 aaaaaaab, 出 fOBNaW2b 開頭. 差咁鬼遠 又有雪崩效應?
 
 ## Remark
 ![baka.gif](baka.gif)
+---
 Tsu, do you know "Tanaka-kun is Always Listless" is yaoi? :-) 
 From Wikipedia: "Tanaka states that because of Ohta's caring nature, he sees Ohta as the perfect candidate for marriage."
 呢段咁唔正常先打英文. 吹咩.
