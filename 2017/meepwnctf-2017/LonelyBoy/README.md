@@ -129,7 +129,7 @@ list 到個 / 入面有個 goodjobnowgetyoursfl4g 咁試下 cat 佢. 冇料到. 
 
 搞一大堆咁能辛苦終於解到.
 
-##後記
+## 後記
 佢個 usort 簡直係老點. 不知所謂. run `system("ls",0)` 就好似 run `0=1` 咁搞笑. usort 個 array 又好似調轉左咁.
 
 做完之後發現有個 function 叫 copy 冇 block 到. 咁 `<?=copy(...$_GET);` 少佢一隻字添. 做多好多野添. 
