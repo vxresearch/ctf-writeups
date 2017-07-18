@@ -29,7 +29,7 @@ echo base64_encode(serialize($obj));
 if($obj->enter === $obj->jackpot){echo "<hr>OK";}else{echo "<hr>PK";}
 ?>
 ```
-唔好問我點解最後係 echo "<hr>PK".
+唔好問我點解最後係 echo PK.
 
 ## 參考資料
 http://php.net/manual/en/language.oop5.references.php
