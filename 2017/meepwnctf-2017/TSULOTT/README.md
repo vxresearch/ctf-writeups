@@ -4,13 +4,18 @@
 
 說明
 >Who Wants to Be a Millionaire? Join My LOTT and Win JACKPOTTTT!!!
+
 >Remote: 128.199.190.23:8001
 
 ## 題解
 呢題好 hea. 所以咁鬼多人解到
+
 入面俾你打個 serialized object. 之後 $obj->jackpot = 一堆隨機數字.
+
 之後 if($obj->enter === $obj->jackpot){echo $flag}
+
 你唔會走去估果D數係乜掛. 所以求其整到 $obj->enter = &$obj->jackpot 之後就解到.
+
 
 ```
 <?php
