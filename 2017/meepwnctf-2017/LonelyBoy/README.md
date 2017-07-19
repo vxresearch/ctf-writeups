@@ -1,6 +1,6 @@
 # MeePwn CTF 2017: LonelyBoy
 
-### (crypto, 1000 points, 1 team solved)
+### (web, 1000 points, 1 team solved)
 
 說明
 >I saw the website of a lonely boy out there, it looks like he wants to be cheered up, can you help him?
