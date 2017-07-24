@@ -31,8 +31,6 @@
 
 求其註冊登入之後有個位可以 upload 相. 
 
-~~求其 upload 個 [1.jpg](http://static.zerochan.net/Ten.Count.full.1930214.jpg) 上去睇下結果話 file too large.~~
-
 話說 upload 個扮係 jpg 既 txt 係會 block 9 你. 見到可以 upload svg 明眼人一睇就知係玩 XSS. 個 svg 你想寫乜都得.
 
 隊個 Cookie stealer 冇反應. 之後我去 IRC 問個作者你個 bot 係咪壞輪左. 佢話好正常你再試下. 可能係個 bot 唔認 svg 係網頁.
@@ -136,17 +134,11 @@ list 到個 / 入面有個 goodjobnowgetyoursfl4g 咁試下 cat 佢. 冇料到. 
 
 例如 ht​tp://188.166.242.140/upload/whatever/index.php?0[0]=0.svg&0[1]=../yaoi.php
 
-就會出 [http://188.166.242.140/upload/yaoi.php](http://archive.is/5qJGy) (真係 click 到架好似係)
+就會出 [http://188.166.242.140/upload/yaoi.php](http://archive.is/5qJGy)
 
 ---
 # English version
-I accidentially found this page and got the flag:
-
-> [http://188.166.242.140/upload/yaoi.php](http://archive.is/5qJGy)
-
-Just kidding.
-
-In short it is "XSS read page + wtf + Webshell" 
+In short it is "XSS read page + ??? + Webshell" 
 
 <ol>
 <li>XSS read page</li>
@@ -161,7 +153,7 @@ In short it is "XSS read page + wtf + Webshell"
   <li>ask the bot to query the page with ?ht​tp://188.166.242.140/ at the end to bypass checking</li>
   </ul>
 
-<li>wtf</li>
+<li>???</li>
   <ul>
   <li>when you got the content of home.php, you found weird form with parameter email_address_of_tsu_friend</li>
   <li>ask the bot to query ht​tp://188.166.242.140/home.php?email_address_of_tsu_friend=your_email_account</li>
