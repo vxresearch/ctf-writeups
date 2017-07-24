@@ -37,12 +37,3 @@ flip 下打 aaaaaaab, 出 fOBNaW2b 開頭. 差咁鬼遠 又有雪崩效應?
 人手試既話, 打 MeePwnCTF{ 出 HzhTWlvm 開頭, 打 MeePwnCTF[ 同 MeePwnCTF( 都係出 PnCmtLbN 開頭. 咁你靠呢個方法就可以估到佢個 salt 係乜.
 
 想當年我都係人手試幾十個字. 依家年紀大都係搵電腦試算數.
-
-## Remark
-![baka.gif](baka.gif)
----
-Tsu, do you know "Tanaka-kun is Always Listless" is yaoi? :-) 
-
-From Wikipedia: "Tanaka states that because of Ohta's caring nature, he sees Ohta as the perfect candidate for marriage."
-
-呢段咁唔正常先打英文. 吹咩.
